@@ -2,12 +2,15 @@ import Login from "./components/Login"
 import "./index.css"
 import {Route,BrowserRouter,Routes} from "react-router-dom"
 import DashboardPage from "./Page/Dashboard"
-import TeacherlistPage from "./Page/Teacherlist"
+import EmployeelistPage from "./Page/Employeelist"
 import AdminListPage from "./Page/Adminlist"
-import StudentListPage from "./Page/Studentlist"
 import SettingPage from "./Page/Setting"
-import HelpSupportPage from "./Page/Help&Support"
+import HelpSupportPage from "./Page/AttendanceReports"
 import Protect from "./Protect"
+import DepartmentPage from "./Page/Department"
+import LeaveListPage from "./Page/Leaves"
+import AttendancePage from "./Page/Attendance"
+import AttendanceReportPage from "./Page/AttendanceReports"
 
 
 const App=()=>{
@@ -18,10 +21,12 @@ const App=()=>{
             <Route element={<Login/>} path="/"/>
             <Route element={<Protect Component={DashboardPage}/>} path="/dashboard"/>
             <Route element={<Protect Component={AdminListPage}/>} path="/adminlist"/>
-            <Route element={<Protect Component={TeacherlistPage}/>} path="/teacherlist"/>
-            <Route element={<Protect Component={StudentListPage}/>} path="/studentlist"/>
+            <Route element={<Protect Component={EmployeelistPage}/>} path="/employeelist"/>
+            <Route element={<Protect Component={AttendanceReportPage}/>} path="/attendancereport"/>
+            <Route element={<Protect Component={DepartmentPage}/>} path="/department"/>
+            <Route element={<Protect Component={LeaveListPage}/>} path="/leaves"/>
+            <Route element={<Protect Component={AttendancePage}/>} path="/attendance"/>
             <Route element={<Protect Component={SettingPage}/>} path="/setting"/>
-            <Route element={<Protect Component={HelpSupportPage}/>} path="/help"/>
          </Routes>
          </BrowserRouter>
         </div>

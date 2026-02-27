@@ -3,7 +3,7 @@ import Sidebar from '../../Layout/Header/sidebar'
 import Header from '../../Layout/Header/Header'
 import TeacherLists from '../../components/teacher/TeacherList'
 
-const TeacherlistPage = () => {
+const EmployeelistPage = () => {
   return (
     <div>
       <Sidebar/>
@@ -15,4 +15,4 @@ const TeacherlistPage = () => {
   )
 }
 
-export default TeacherlistPage;
+export default EmployeelistPage;

@@ -1,68 +1,100 @@
-.count_display{
-    display: flex;
-    justify-content: space-evenly;
-    gap: 25px;
+.dashboardTitle {
+    font-size: 40px;
+    font-weight: 500;
+    color: #008BA6;
+    text-decoration: underline;
 }
 
-.count_display div{
-    width: 100%;
-    height: 20vh;
-    border-radius: 10px;
-    padding: 10px;
-    /* display: flex; */
-    justify-content: start;
-    /* align-items: center; */
-    /* border: 1px solid black; */
-    font-weight: 500;
-    color: #fff;
-    box-shadow: 0px 0px 5px black;
-}
-.count_display div span{
-    font-size: 25px;
-    /* border: 1px solid black; */
-    width: fit-content;
-    height: fit-content;
-}
-.count_display div h3{
-    width: 100%;
-    height: fit-content;
-    font-size: 50px;
-    text-align: center;
-    /* border: 1px solid black; */
-}
-.admin_count{
-    background-color: rgb(128, 243, 128);
-}
-.teacher_count{
-    background-color: rgb(237, 108, 239);
-}
-.student_count{
-    background-color: rgb(128, 193, 243);
-}
-.img_container_for_school{
+.dashboardLayout {
     height: 60vh;
     width: 100%;
-    border-radius: 10px;
-    margin-top: 5vh;
-    /* box-shadow: 0px 0px 5px black; */
+    border: 2px solid #D1D1D1;
+    margin-top: 30px;
+    border-radius: 15px;
+    padding: 20px;
+    background-color: #008BA6;
 }
-.img_container_for_school div{
-    height: 100%;
+
+.dashboardSubLayout {
+    height: 50%;
     width: 100%;
-    background-image: url(../assets/defaultprofile.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+}
+
+.dashboardSubTitle{
+    font-size: 25px;
+    font-weight: 700;
+    color: white;
+
+}
+
+.card-list {
+    height: 65%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap:2%;
+}
+
+.card{
+    height: 100%;
+    width: 23.5%;
     border-radius: 10px;
+    display: flex;
+    align-items: end;
+    justify-content: end;
 }
-.pick1{
-    background-image: url(../assets/school4.webp) !important;
+.minicard {
+    height: 100%;
+    width: 98%;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.pick2{
-    background-image: url(../assets/school2.avif) !important;
+
+.minisubcard{
+    height: 50%;
+    width: 85%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
-.pick3{
-    background-image: url(../assets/school1.avif) !important;
+
+.card-text{
+    height: 100%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content:space-between;
 }
-.pick4{
-    background-image: url(../assets/school3.avif) !important;
+.card-text>h6{
+    font-size: 20px;
+    color: #606372;
+    font-weight: 400;
+}
+
+.card-text>h3{
+    font-size: 40px;
+    font-weight: 700;
+    color: black;
+}
+
+.card-icon{
+    height: 100%;
+    width: 25%;
+    color: white;
+    font-size: 40px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

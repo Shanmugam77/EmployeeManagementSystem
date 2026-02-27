@@ -136,12 +136,55 @@
   
   .sidebar-header {
     text-align: center;
+    width: 100%;
+    height: 120px;
+    border-bottom: 1px solid #d4d4e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 65%;
+    width: 90%;
+    background-color: #d1d1d1;
+    border-radius: 5px;
+    /* border: 2px solid black; */
+    color: white;
+  }
+  .logo-icon{
+    height: 100%;
+    width: 30%;
+    /* border: 2px solid white; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin-right: 5px;
+    background-color:#008BA6;
+  }
+  .logo-text {
+    height: 100%;
+    width: 70%;
+    text-align: start;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content:center;
+  }
+  .logo-text>h3{
+    font-size: 20px;
+    font-weight: 900;
   }
   
-  .sidebar-header img {
+  /* .sidebar-header img {
     width: 160px;
     padding: 0 0 16px 0;
-  }
+  } */
   
   .sidebar-nav {
     overflow-y: auto;

@@ -107,8 +107,8 @@ const TeacherLists = () => {
   return (
     <div>
       <div className='main-title-all'>
-        <span>Teacher List</span>
-        <button>Add Teacher</button>
+        <span>Employee List</span>
+        <button>Add Employee</button>
       </div>
       <div className='admin-list-section'>
            <div className="search-table-container">
