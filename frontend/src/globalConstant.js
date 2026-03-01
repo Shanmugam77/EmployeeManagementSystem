@@ -5,6 +5,7 @@ export const showErrorAlert = (message) => {
       position: "center",
       icon: "error",
       title: "Error",
+      confirmButtonColor: "#008BA6",
       text: message,
       customClass: {
         icon: "centered-icon",
@@ -16,6 +17,7 @@ export const showErrorAlert = (message) => {
       position: "center",
       icon: "success",
       title: "Successful",
+      confirmButtonColor: "#008BA6",
       text: message,
       customClass: {
         icon: "centered-icon",

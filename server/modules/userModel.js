@@ -20,8 +20,28 @@ let userschema=new mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["ADMIN", "TEACHER", "STUDENT"],
-        default:"ADMIN",
+        enum:["ADMIN", "Employee"],
+        default:"Employee",
+        required:true
+    },
+    gender:{
+        type:String,
+        enum:["Male", "Female", "Transgender"],
+        default:"Male",
+        required:true
+    },
+    maritalStatus:{
+        type:String,
+        enum:["Married", "Unmarried"],
+        default:"Unmarried",
+        required:true
+    },
+    salary:{
+        type:Number,
+        required:true
+    },
+    designation:{
+        type:String,
         required:true
     },
     createdBy:{

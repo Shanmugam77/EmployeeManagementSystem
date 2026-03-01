@@ -67,7 +67,7 @@ class UserController{
             const data = req.body;
             data.updatedBy = userId;
             const updatedData = await UserService.updateUser(Id,data);
-            if (!updatedData) return res.status(400).json({message:"Failed to update Admin"});
+            if (!updatedData) return res.status(400).json({message:"Failed to update User"});
             return res.status(200).json({userData:updatedData,message:"User updated successfully"});
         } catch (error) {
             console.log(error);
