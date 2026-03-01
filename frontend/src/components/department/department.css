@@ -1,0 +1,203 @@
+.deparment-body{
+  display: flex;
+  flex-direction: column;
+}
+.main-title-all {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  
+  .main-title-all span {
+    font-size: 40px;
+    font-weight: 500;
+    color: #008BA6;
+    text-decoration: underline;
+    letter-spacing: 0.3px;
+  }
+  
+  .main-title-all button {
+    border: 1px solid #008BA6;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: #008BA6;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    background: transparent;
+  }
+  
+  .main-title-all button:hover {
+    color: #fff;
+    background: #008BA6;
+  }
+
+  .admin-list-section {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+
+  .search-table-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .search-input-table {
+    border: 1px solid #e5e5e5 !important;
+    border-radius: 4px !important;
+    color: #878790 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 6px 12px !important;
+  }
+
+  .delete-button-table {
+    font-size: 16px;
+    font-weight: 700;
+    background: rgba(255, 0, 0, 0.1);
+    padding: 8px;
+    border-radius: 50%;
+    color: #ff0000;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .edit-button-table {
+    font-size: 16px;
+    font-weight: 700;
+    background: rgba(0, 125, 252, 0.1);
+    padding: 8px;
+    border-radius: 50%;
+    color: #007dfc;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .edit-button-table:hover,
+  .delete-button-table:hover {
+    transform: scale(1.1);
+  }
+
+  .addDeppage{
+    height:87vh;
+    width: 85%;
+    /* border: 2px solid black; */
+    position: absolute;
+    background-color: rgba(209,209,209, 0.096);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .addDepBody{
+    height: 100%;
+    width: 50%;
+    /* border: 2px solid black; */
+    border-radius: 10px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    background-color: #008BA6;
+    box-shadow: 0px 0px 5px #878790;
+  }
+
+  .cancleButton{
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 10px;
+    border: 2px solid white;
+    border-radius: 5px;
+    font-size: 40px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .addDepcard{
+    height: 100%;
+    width: 100%;
+    /* border: 2px solid black; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 5%;
+  }
+
+  .addDeptitle{
+    font-size: 40px;
+    font-weight: 500;
+    text-decoration: underline;
+    color: white;
+  }
+  
+  .depform{
+    height: 60vh;
+    width: 60%;
+    /* border: 2px solid black; */
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    
+  }
+/* ---------------------------------------------------- */
+
+.depform>div{
+    height: 23%;
+    width: 100%;
+    /* border: 2px solid black; */
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+
+}
+.depform>div>h5{
+    font-size: 20px;
+    font-weight: 700;
+    color: #008BA6;
+}
+
+.inp{
+    height: 60%;
+    width: 100%;
+    font-size: 20px;
+}
+.inp:hover{
+    border-color: #008BA6 !important;
+}
+
+.depform>div>p{
+    font-size: 15px;
+    color: #D9D9D9;
+}
+
+.CDbutton{
+    height: 70%;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: white;
+    color: #008BA6;
+    border: 2px solid #008BA6 !important;
+}
+
+.CDbutton:hover{
+    background-color: #008BA6 !important;
+    /* border: 2px solid #008BA6 !important; */
+    color: white !important;
+    
+}

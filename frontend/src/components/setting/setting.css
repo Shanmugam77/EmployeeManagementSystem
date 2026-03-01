@@ -120,6 +120,9 @@
     width: 100%;
     font-size: 20px;
 }
+.inpas:hover{
+    border-color: #008BA6 !important;
+}
 
 .settingcardBody>div>p{
     font-size: 15px;
@@ -131,14 +134,15 @@
     width: 100%;
     font-size: 20px;
     font-weight: 700;
-    background-color: #008BA6;
-    color: white;
+    background-color: white;
+    color: #008BA6;
+    border: 2px solid #008BA6 !important;
 }
 
 .Sbutton:hover{
-    background-color: white;
-    border: 2px solid #008BA6 !important;
-    color: #008BA6 !important;
+    background-color: #008BA6 !important;
+    /* border: 2px solid #008BA6 !important; */
+    color: white !important;
     
 }
 

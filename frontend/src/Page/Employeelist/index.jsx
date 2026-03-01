@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from '../../Layout/Header/sidebar'
 import Header from '../../Layout/Header/Header'
-import TeacherLists from '../../components/teacher/TeacherList'
+import EmployeeList from '../../components/employee/EmployeeList'
 
 const EmployeelistPage = () => {
   return (
@@ -9,7 +9,7 @@ const EmployeelistPage = () => {
       <Sidebar/>
       <Header/>
       <div className="main-wrapper">
-        <TeacherLists/>
+        <EmployeeList/>
       </div>
     </div>
   )

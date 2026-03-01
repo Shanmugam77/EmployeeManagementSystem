@@ -3,9 +3,7 @@ import "./index.css"
 import {Route,BrowserRouter,Routes} from "react-router-dom"
 import DashboardPage from "./Page/Dashboard"
 import EmployeelistPage from "./Page/Employeelist"
-import AdminListPage from "./Page/Adminlist"
 import SettingPage from "./Page/Setting"
-import HelpSupportPage from "./Page/AttendanceReports"
 import Protect from "./Protect"
 import DepartmentPage from "./Page/Department"
 import LeaveListPage from "./Page/Leaves"
@@ -20,7 +18,6 @@ const App=()=>{
          <Routes>
             <Route element={<Login/>} path="/"/>
             <Route element={<Protect Component={DashboardPage}/>} path="/dashboard"/>
-            <Route element={<Protect Component={AdminListPage}/>} path="/adminlist"/>
             <Route element={<Protect Component={EmployeelistPage}/>} path="/employeelist"/>
             <Route element={<Protect Component={AttendanceReportPage}/>} path="/attendancereport"/>
             <Route element={<Protect Component={DepartmentPage}/>} path="/department"/>

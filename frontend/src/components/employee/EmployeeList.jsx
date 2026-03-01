@@ -1,3 +1,4 @@
+import './employee.css';
 import React, { useEffect, useState } from 'react'
 import { Button, Table, Input } from 'antd'
 import {
@@ -8,7 +9,7 @@ import {
   } from "@ant-design/icons";
 import Instance from '../../Axiosconfig';
 
-const TeacherLists = () => {
+const EmployeeList = () => {
     const [teacherData,setTeacherData] = useState([]);
 
     const fetchTeacherData = async()=>{
@@ -20,8 +21,9 @@ const TeacherLists = () => {
         })
         if (response.status == 200) {
             const users = response?.data?.users || [];
-            const teachers = users?.filter(x => x?.role === "TEACHER");
-            setTeacherData(teachers);
+            setTeacherData(users);
+            // const teachers = users?.filter(x => x?.role === "TEACHER");
+            // setTeacherData(teachers);
         }    
       } catch (error) {
           console.log(error?.response?.data);
@@ -34,22 +36,13 @@ const TeacherLists = () => {
 
     const columns = [
         {
-          title: "First Name",
+          title: "Name",
           render: (text, item) => (
             <div>
-              {item?.firstName || 'N/A'}
+              {item?.firstName +' '+item?.lastName || 'N/A'}
             </div>
           ),
           sorter: (a, b) => a?.firstName.localeCompare(b?.firstName),
-        },
-        {
-          title: "Last Name",
-          render: (text, item) => (
-            <div>
-              {item?.lastName || 'N/A'}
-            </div>
-          ),
-          sorter: (a, b) => a?.lastName.localeCompare(b?.lastName),
         },
         {
             title: "Email",
@@ -60,8 +53,24 @@ const TeacherLists = () => {
             ),
             sorter: (a, b) => a?.email.localeCompare(b?.email),
           },
+           {
+          title: "Department",
+          render: (text, item) => (
+            <div>
+              {item?.department || 'N/A'}
+            </div>
+          ),
+        },
+          {
+          title: "Designation",
+          render: (text, item) => (
+            <div>
+              {item?.designation || 'N/A'}
+            </div>
+          ),
+        },
         {
-          title: "Date",
+          title: "DOB",
           dataIndex: "createdAt",
           sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
           render: (text, item) => {
@@ -145,5 +154,5 @@ const TeacherLists = () => {
   )
 }
 
-export default TeacherLists
+export default EmployeeList;
 
