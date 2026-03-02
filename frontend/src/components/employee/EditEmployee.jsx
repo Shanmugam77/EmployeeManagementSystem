@@ -3,17 +3,19 @@ import './employee.css';
 import { useState } from 'react';
 import Instance from '../../Axiosconfig';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { showErrorAlert, showSuccessAlert } from '../../globalConstant';
+import dayjs from "dayjs";
 
-const AddEmployee = () => {
-
+const EditEmployee = () => {
+    const editUserId = useParams();
     const navigate = useNavigate();
     let [depData,setDepData] = useState([]);
     let [empData,setEmpData] = useState({});
 
     let handleFieldChange = (e,fieldName) => {
         // console.log(e?.target?.value,e);
+        
         let value = e?.target?.value;
         if (fieldName == "profileImg") {
            const file = e.target.files[0];
@@ -42,7 +44,10 @@ const AddEmployee = () => {
            return
         }
         if (fieldName == "dob") {
-            value = e.toDate();
+            value = e;
+            console.log(value);
+            if (!value) return;
+            // value = e?.toDate();
             // console.log(value);  
         }
         if (fieldName == "gender" || fieldName == "maritalStatus" || fieldName == "role"|| fieldName == "department" ) {
@@ -56,21 +61,24 @@ const AddEmployee = () => {
         });
     };
 
-    let handleAddEmp = async() => {
+    let handleUpdateEmp = async() => {
         try {
-            // console.log(empData);
-            const payload = empData;
-            const response = await Instance.post("/user",payload,{
+            // console.log("before",empData);
+            let payload = empData;
+            payload.dob = payload?.dob?.toDate();
+            // console.log(payload);
+            
+            const response = await Instance.put(`/user/${editUserId.id}`, payload,{
                 headers:{
                     Authorization:`Bearer ${localStorage.getItem("token")}`
                 }
             });
-            if (response.status = 201) {
+            if (response.status = 200) {
                 navigate("/employeelist");
                 showSuccessAlert(response?.data?.message);
             }
         } catch (error) {
-           console.log(error?.response?.data);
+           console.log(error);
            showErrorAlert(error?.response?.data?.message)  
         }
     }
@@ -94,34 +102,55 @@ const AddEmployee = () => {
       }
     };
 
+    let fetchEditUserData = async() => {
+        try {
+            const response = await Instance.get(`/user/${editUserId.id}`,{
+                headers:{
+                    Authorization:`Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            if (response.status == 200) {
+                // console.log(response?.data?.user);
+                let result = response?.data?.user;
+                result.dob = dayjs(result.dob);
+                setEmpData(result);    
+            }
+        } catch (error) {
+            console.log(error);
+            showErrorAlert(error?.response?.data?.message)
+        }
+    }
+
     useEffect(()=>{
+        // console.log(editUserId);
+        fetchEditUserData();
         fetchDepData();
     },[])
     return(
         <div>
-            <h3 className='addEmployeeTitle'>CREATE EMPLOYEE PROFILE</h3>
+            <h3 className='addEmployeeTitle'>EDIT EMPLOYEE PROFILE</h3>
             <div className='addemployout'>
                 <div className='addempformlayout'>
                     <table>
                         <tr>
                             <td>
                                 <h3>First Name</h3>
-                                <Input className="inp" placeholder="Enter First Name" variant="filled"  onChange={(e)=>{handleFieldChange(e,"firstName")}}/>
+                                <Input className="inp" placeholder="Enter First Name" variant="filled"  onChange={(e)=>{handleFieldChange(e,"firstName")}} value={empData?.firstName || ""}/>
 
                             </td>
                             <td>
                                 <h3>E-mail</h3>
-                                <Input className="inp" type='email' placeholder="Enter E-mail" variant="filled" onChange={(e)=>{handleFieldChange(e,"email")}}  />
+                                <Input className="inp" type='email' placeholder="Enter E-mail" variant="filled" onChange={(e)=>{handleFieldChange(e,"email")}}  value={empData?.email || ""}/>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <h3>Last Name</h3>
-                                <Input className="inp" placeholder="Enter Last Name" variant="filled" onChange={(e)=>{handleFieldChange(e,"lastName")}}  />
+                                <Input className="inp" placeholder="Enter Last Name" variant="filled" onChange={(e)=>{handleFieldChange(e,"lastName")}}  value={empData?.lastName || ""}/>
                             </td>
                              <td>
                                 <h3>Password</h3>
-                                <Input.Password className="inp" placeholder="Enter Password" variant="filled" onChange={(e)=>{handleFieldChange(e,"password")}} />
+                                <Input.Password className="inp" placeholder="Enter Password" variant="filled" onChange={(e)=>{handleFieldChange(e,"password")}} disabled value={empData?.password || ""}/>
                             </td>
                         </tr>
                         <tr>
@@ -131,6 +160,7 @@ const AddEmployee = () => {
                                   variant='filled'
                                   className="inp"
                                   placeholder="select Gender"
+                                  value={empData?.gender}
                                 //   defaultValue={'male'}
                                   onChange={(e)=>{handleFieldChange(e,"gender")}}
                                   options={[
@@ -146,6 +176,7 @@ const AddEmployee = () => {
                                   variant='filled'
                                   className="inp"
                                   placeholder="Select Role"
+                                  value={empData?.role || ""}
                                 //   defaultValue={'Employee'}
                                   onChange={(e)=>{handleFieldChange(e,"role")}}
                                   options={[
@@ -162,6 +193,8 @@ const AddEmployee = () => {
                                   variant='filled' 
                                   placeholder='Select DOB'
                                   className='dobinput'
+                                  value={empData?.dob}
+                                //   disabled
                                   onChange={(e)=>{handleFieldChange(e,"dob")}}
                                 />
                             </td>
@@ -171,6 +204,7 @@ const AddEmployee = () => {
                                   variant='filled'
                                   className="inp"
                                   placeholder="Select Department"
+                                  value={empData?.department}
                                 //   defaultValue={'Unmarried'}
                                   onChange={(e)=>{handleFieldChange(e,"department")}}
                                   options={depData}
@@ -184,6 +218,7 @@ const AddEmployee = () => {
                                   variant='filled'
                                   className="inp"
                                   placeholder="Select Marital Status"
+                                  value={empData?.maritalStatus}
                                 //   defaultValue={'Unmarried'}
                                   onChange={(e)=>{handleFieldChange(e,"maritalStatus")}}
                                   options={[
@@ -194,7 +229,7 @@ const AddEmployee = () => {
                             </td>
                             <td>
                                 <h3>Designation</h3>
-                                <Input className="inp" placeholder="Enter Designation" variant="filled" onChange={(e)=>{handleFieldChange(e,"designation")}}  />
+                                <Input className="inp" placeholder="Enter Designation" variant="filled" onChange={(e)=>{handleFieldChange(e,"designation")}} value={empData?.designation || ""} />
                             </td>
                         </tr>
                         <tr>
@@ -204,12 +239,12 @@ const AddEmployee = () => {
                             </td>
                             <td>
                                 <h3>Salary</h3>
-                                <Input className="inp" type='Number' placeholder="Enter Salary" variant="filled" onChange={(e)=>{handleFieldChange(e,"salary")}} />
+                                <Input className="inp" type='Number' placeholder="Enter Salary" variant="filled" onChange={(e)=>{handleFieldChange(e,"salary")}} value={empData?.salary || null} />
                             </td>
                         </tr>
                     </table>
                     <div className='addempbuttonlayout'>
-                        <button className='addempbutton' onClick={handleAddEmp}>ADD USER</button>
+                        <button className='addempbutton' onClick={handleUpdateEmp}>UPDATE USER</button>
                         <button className='addempbutton' onClick={()=>{navigate(-1)}}>CANCLE</button>
                     </div>
 
@@ -221,4 +256,4 @@ const AddEmployee = () => {
         </div>
     )
 }
-export default AddEmployee;
+export default EditEmployee;

@@ -14,7 +14,7 @@ class UserController{
             if(!lastName) return res.status(400).json({message:"LastName required"});
             if(!dob) return res.status(400).json({message:"DOB required"});
             if(!email) return res.status(400).json({message:"Email required"});
-            if (!isValidGmail(email)) res.status(400).json({message:"Please enter a valid Gmail address"});
+            if (!isValidGmail(email)) return res.status(400).json({message:"Please enter a valid Gmail address"});
             if(!password) return res.status(400).json({message:"Password required"});
             if(!role) return res.status(400).json({message:"Role required"});
             if(!gender) return res.status(400).json({message:"Gender required"});
@@ -79,7 +79,7 @@ class UserController{
             if(!lastName) return res.status(400).json({message:"LastName required"});
             if(!dob) return res.status(400).json({message:"DOB required"});
             if(!email) return res.status(400).json({message:"Email required"});
-            if (!isValidGmail(email)) res.status(400).json({message:"Please enter a valid Gmail address"});
+            if (!isValidGmail(email)) return res.status(400).json({message:"Please enter a valid Gmail address"});
             if(!password) return res.status(400).json({message:"Password required"});
             if(!role) return res.status(400).json({message:"Role required"});
             if(!gender) return res.status(400).json({message:"Gender required"});

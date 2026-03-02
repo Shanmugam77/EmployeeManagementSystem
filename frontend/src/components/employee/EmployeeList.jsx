@@ -1,6 +1,6 @@
 import './employee.css';
-import React, { useEffect, useState } from 'react'
-import { Button, Table, Input } from 'antd'
+import { useEffect, useState } from 'react'
+import { Table, Input } from 'antd'
 import {
     SearchOutlined,
     FilterOutlined,
@@ -8,12 +8,15 @@ import {
     DeleteOutlined
   } from "@ant-design/icons";
 import Instance from '../../Axiosconfig';
-import { json, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
+import { showSuccessAlert } from '../../globalConstant';
 
 const EmployeeList = () => {
     const [userData,setuserData] = useState([]);
     let [departmentData,setDepartmentData] = useState([]);
     const navigate = useNavigate();
+    let [pageRefresher,setPageRefresher] = useState(false)
 
     const fetchuserData = async()=>{
       try {
@@ -26,7 +29,7 @@ const EmployeeList = () => {
             let users = response?.data?.users || [];
             // setuserData(users);
             let loginUserData =JSON.parse(localStorage.getItem("loginUserData"));
-            console.log(loginUserData?.userRole);
+            // console.log(loginUserData?.userRole);
             if (loginUserData?.userRole == "SUPER-ADMIN") {
               users = users?.filter(x => x?.role !== "SUPER-ADMIN");
               setuserData(users);
@@ -63,7 +66,7 @@ const EmployeeList = () => {
     useEffect(()=>{
        fetchuserData()
        fetchDepartment()
-    },[])
+    },[pageRefresher])
 
     const displayDepName = (id) => {
       if (!id || !departmentData?.length) return "";
@@ -72,6 +75,22 @@ const EmployeeList = () => {
         (x) => x?._id?.toString() === id?.toString()
       );
       return result?.departmentName || "";
+    };
+
+    const handleDelete = async(id) => {
+      try {
+        const response = await Instance.delete(`/user/${id}`,{
+          headers:{
+            Authorization:`Bearer ${localStorage.getItem("token")}`
+          }
+        });
+        if (response.status == 200) {
+          setPageRefresher(!pageRefresher);
+          showSuccessAlert(response?.data?.message);
+        }
+      } catch (error) {
+        
+      }
     };
 
 
@@ -133,7 +152,7 @@ const EmployeeList = () => {
             <EditOutlined
               key={`edit-${record?._id}`}
               className="edit-button-table"
-            //   onClick={() => navigate(`/edit-post/${record._id}`)}
+              onClick={() => navigate(`/editemployee/${record._id}`)}
             />
           ),
         },
@@ -144,20 +163,20 @@ const EmployeeList = () => {
             <DeleteOutlined
               key={`delete-${record._id}`}
               className="delete-button-table"
-            //   onClick={() => {
-            //     Swal.fire({
-            //       title: "Are you sure",
-            //       text: "You want to Delete?",
-            //       showCancelButton: true,
-            //       confirmButtonColor: "#555",
-            //       cancelButtonColor: "#ce1b28",
-            //       confirmButtonText: "Yes, Delete!"
-            //     }).then((result) => {
-            //       if (result.isConfirmed) {
-            //         handleDelete(record._id)
-            //       }
-            //     })
-            //   }}
+              onClick={() => {
+                Swal.fire({
+                  title: "Are you sure",
+                  text: "You want to Delete?",
+                  showCancelButton: true,
+                  confirmButtonColor: "#008BA6",
+                  cancelButtonColor: "#D1D1D1",
+                  confirmButtonText: "Yes, Delete!"
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    handleDelete(record._id)
+                  }
+                })
+              }}
             />
           ),
         },
