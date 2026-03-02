@@ -8,11 +8,14 @@ import {
     DeleteOutlined
   } from "@ant-design/icons";
 import Instance from '../../Axiosconfig';
+import { json, useNavigate } from 'react-router-dom';
 
 const EmployeeList = () => {
-    const [teacherData,setTeacherData] = useState([]);
+    const [userData,setuserData] = useState([]);
+    let [departmentData,setDepartmentData] = useState([]);
+    const navigate = useNavigate();
 
-    const fetchTeacherData = async()=>{
+    const fetchuserData = async()=>{
       try {
         const response = await Instance.get("/user",{
             headers:{
@@ -20,18 +23,56 @@ const EmployeeList = () => {
             }
         })
         if (response.status == 200) {
-            const users = response?.data?.users || [];
-            setTeacherData(users);
-            // const teachers = users?.filter(x => x?.role === "TEACHER");
-            // setTeacherData(teachers);
+            let users = response?.data?.users || [];
+            // setuserData(users);
+            let loginUserData =JSON.parse(localStorage.getItem("loginUserData"));
+            console.log(loginUserData?.userRole);
+            if (loginUserData?.userRole == "SUPER-ADMIN") {
+              users = users?.filter(x => x?.role !== "SUPER-ADMIN");
+              setuserData(users);
+            }else{
+              users = users?.filter(x => x?.role !== "ADMIN" && x?.role !== "SUPER-ADMIN");
+              setuserData(users);
+            }
+            
+            
         }    
       } catch (error) {
           console.log(error?.response?.data);
       }
     }
+
+    const fetchDepartment = async() => {
+      try {
+        const response = await Instance.get("/department",{
+          headers:{
+            Authorization:`Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        if (response.status == 200) {
+          // console.log(response?.data?.departments);
+          const departments = response?.data?.departments ||[];
+          setDepartmentData(departments)
+        }
+      } catch (error) {
+        console.log(error?.response?.data);
+        
+      }
+    }
+
     useEffect(()=>{
-       fetchTeacherData()
+       fetchuserData()
+       fetchDepartment()
     },[])
+
+    const displayDepName = (id) => {
+      if (!id || !departmentData?.length) return "";
+    
+      const result = departmentData.find(
+        (x) => x?._id?.toString() === id?.toString()
+      );
+      return result?.departmentName || "";
+    };
 
 
     const columns = [
@@ -57,7 +98,7 @@ const EmployeeList = () => {
           title: "Department",
           render: (text, item) => (
             <div>
-              {item?.department || 'N/A'}
+              {displayDepName(item?.department) || 'N/A'}
             </div>
           ),
         },
@@ -69,12 +110,20 @@ const EmployeeList = () => {
             </div>
           ),
         },
+         {
+          title: "Role",
+          render: (text, item) => (
+            <div>
+              {item?.role || 'N/A'}
+            </div>
+          ),
+        },
         {
           title: "DOB",
-          dataIndex: "createdAt",
-          sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+          dataIndex: "dob",
+          // sorter: (a, b) => new Date(a.dob) - new Date(b.dob),
           render: (text, item) => {
-            return new Date(item?.createdAt).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" });
+            return new Date(item?.dob).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" });
           },
         },
         {
@@ -117,7 +166,7 @@ const EmployeeList = () => {
     <div>
       <div className='main-title-all'>
         <span>Employee List</span>
-        <button>Add Employee</button>
+        <button onClick={()=>{navigate("/addemployee")}}>Add Employee</button>
       </div>
       <div className='admin-list-section'>
            <div className="search-table-container">
@@ -137,7 +186,7 @@ const EmployeeList = () => {
       <div className="table-list">
           <Table
             columns={columns}
-            dataSource={teacherData}
+            dataSource={userData}
             rowKey={(data) => data._id}
             // rowSelection={{
             //   type: 'checkbox',

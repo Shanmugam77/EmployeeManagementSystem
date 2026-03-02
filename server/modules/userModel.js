@@ -9,6 +9,10 @@ let userschema=new mongoose.Schema({
         type:String,
         required:true,
     },
+    dob:{
+        type:Date,
+        required:true,
+    },
     email:{
         type:String,
         required:true,
@@ -20,13 +24,13 @@ let userschema=new mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["ADMIN", "Employee"],
-        default:"Employee",
+        enum:["ADMIN", "EMPLOYEE", "SUPER-ADMIN"],
+        default:"EMPLOYEE",
         required:true
     },
     gender:{
         type:String,
-        enum:["Male", "Female", "Transgender"],
+        enum:["Male", "Female", "Other"],
         default:"Male",
         required:true
     },
@@ -42,6 +46,13 @@ let userschema=new mongoose.Schema({
     },
     designation:{
         type:String,
+        required:true
+    },
+    profileImg:{
+        type:String,
+    },
+    department:{
+        type:mongoose.Schema.Types.ObjectId,
         required:true
     },
     createdBy:{

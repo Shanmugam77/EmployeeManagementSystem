@@ -1,7 +1,7 @@
 const adminMiddleware = async(req,res,next) => {
    try {
     const {userRole} = req.user;
-    if(userRole !== "ADMIN") return res.status(400).json({message:"Admin only have access"});
+    if(userRole == "EMPLOYEE") return res.status(400).json({message:"Super-Admin & Admin only have access"});
     next();
    } catch (error) {
     console.log(error.message);

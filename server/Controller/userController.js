@@ -5,12 +5,26 @@ const { hashPassword } = require("../utils/bcryptUtil");
 class UserController{
     async addUser(req,res){
         try {
-            const {firstName, lastName, email, password, role} = req.body;
+            const {firstName, lastName, dob, email, password, role, gender, maritalStatus, salary, designation, department} = req.body;
+            const isValidGmail = (email) => {
+              const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+              return gmailRegex.test(email);
+            };
             if(!firstName) return res.status(400).json({message:"FirstName required"});
             if(!lastName) return res.status(400).json({message:"LastName required"});
+            if(!dob) return res.status(400).json({message:"DOB required"});
             if(!email) return res.status(400).json({message:"Email required"});
+            if (!isValidGmail(email)) res.status(400).json({message:"Please enter a valid Gmail address"});
             if(!password) return res.status(400).json({message:"Password required"});
             if(!role) return res.status(400).json({message:"Role required"});
+            if(!gender) return res.status(400).json({message:"Gender required"});
+            if(!maritalStatus) return res.status(400).json({message:"Marital Status required"});
+            if(!salary) return res.status(400).json({message:"Salary required"});
+            if(!designation) return res.status(400).json({message:"Designation required"});
+            if(!department) return res.status(400).json({message:"Department required"});
+
+
+
 
             if (await User.findOne({email})) {
                 return res.status(400).json({message:"Email already in use"});
@@ -56,12 +70,23 @@ class UserController{
     async editUser(req,res){
         try {
             const Id = req.params.id;
-            const {firstName, lastName, email, password,  role} = req.body;
+            const {firstName, lastName, dob, email, password, role, gender, maritalStatus, salary, designation, department} = req.body;
+            const isValidGmail = (email) => {
+              const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+              return gmailRegex.test(email);
+            };
             if(!firstName) return res.status(400).json({message:"FirstName required"});
             if(!lastName) return res.status(400).json({message:"LastName required"});
+            if(!dob) return res.status(400).json({message:"DOB required"});
             if(!email) return res.status(400).json({message:"Email required"});
+            if (!isValidGmail(email)) res.status(400).json({message:"Please enter a valid Gmail address"});
             if(!password) return res.status(400).json({message:"Password required"});
             if(!role) return res.status(400).json({message:"Role required"});
+            if(!gender) return res.status(400).json({message:"Gender required"});
+            if(!maritalStatus) return res.status(400).json({message:"Marital Status required"});
+            if(!salary) return res.status(400).json({message:"Salary required"});
+            if(!designation) return res.status(400).json({message:"Designation required"});
+            if(!department) return res.status(400).json({message:"Department required"});
 
             const {userId} = req.user;
             const data = req.body;
