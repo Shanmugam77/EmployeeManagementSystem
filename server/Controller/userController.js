@@ -1,6 +1,6 @@
 const { User } = require("../modules/userModel");
 const {UserService} = require("../service/userService")
-const { hashPassword } = require("../utils/bcryptUtil");
+const { hashPassword, comparePassword } = require("../utils/bcryptUtil");
 
 class UserController{
     async addUser(req,res){
@@ -106,6 +106,33 @@ class UserController{
             const deletedData = await UserService.deleteUser(Id);
             if(!deletedData) return res.status(400).json({message:'Failed to delete User'});
             return res.status(200).json({userData:deletedData, message:"User deleted successfully"});
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({error:error.message});
+        }
+    }
+
+    async changeUserPassword(req,res){
+        try {
+            const Id = req.params.id;
+            const {currentPassword,newPassword,confirmNewPassword} = req?.body;
+            if (!currentPassword || !newPassword || !confirmNewPassword) return res.status(400).json({message:"Current & New & ConfirmNew Password are Required"});
+            if (newPassword !== confirmNewPassword) return res.status(400).json({message:"Please make sure both New password & ConfirmNew password are same"});
+            const currentUser = await User.findOne({_id:Id});
+            const isCurrentPasswordCrt = await comparePassword(currentPassword,currentUser?.password);
+            if(!isCurrentPasswordCrt) return res.status(400).json({message:"Wrong Current Password"});
+            if(currentPassword == confirmNewPassword) return res.status(400).json({message:"Your current password and new password are same, make some changes in new password"});
+
+            const hashPass = await hashPassword(10,confirmNewPassword);
+
+            const{userId} = req.user;
+            const data = currentUser;
+            data.password = hashPass;
+            data.updatedBy = userId || '';
+            const updatedData = await UserService.updateUser(Id,data);
+             if (!updatedData) return res.status(400).json({message:"Failed to update password"});
+            return res.status(200).json({userData:updatedData,message:"Password updated successfully"});
+
         } catch (error) {
             console.log(error);
             return res.status(500).json({error:error.message});
