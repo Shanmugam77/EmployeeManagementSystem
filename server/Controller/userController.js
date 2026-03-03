@@ -38,6 +38,7 @@ class UserController{
             data.createdBy = userId || "";
 
             const newData = await UserService.createUser(data);
+            if(!newData) return res.status(400).json({message:"Failed to create user"});
             return res.status(201).json({user:newData,message:"User created successfully"});
             
         } catch (error) {

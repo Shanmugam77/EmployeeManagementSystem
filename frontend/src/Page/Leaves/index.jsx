@@ -1,3 +1,4 @@
+import LeaveList from "../../components/leave/LeaveList";
 import Header from "../../Layout/Header/Header"
 import Sidebar from "../../Layout/Header/sidebar"
 
@@ -7,7 +8,7 @@ const LeaveListPage = () => {
             <Sidebar/>
             <Header/>
             <div className="main-wrapper">
-                Leave page
+                <LeaveList/>
             </div>
         </div>
     )

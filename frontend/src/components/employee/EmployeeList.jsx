@@ -184,7 +184,7 @@ const EmployeeList = () => {
   return (
     <div>
       <div className='main-title-all'>
-        <span>Employee List</span>
+        <span>EMPLOYEE LIST</span>
         <button onClick={()=>{navigate("/addemployee")}}>Add Employee</button>
       </div>
       <div className='admin-list-section'>
