@@ -10,7 +10,8 @@ let leaveschema = new mongoose.Schema({
     action:{
         type:String,
         enum:["Pending","Approved","Rejected"],
-        default:"Pending"
+        default:"Pending",
+        required:true
     },
     fromDate:{
         type:Date,
@@ -30,11 +31,11 @@ let leaveschema = new mongoose.Schema({
     },
     empId:{
         type:mongoose.Schema.Types.ObjectId,
+        ref:"users",
         required:true
     },
     updatedBy:{
         type:mongoose.Schema.Types.ObjectId,
-        required:true
     }
 },{timestamps:true});
 const Leave = mongoose.model("leaves",leaveschema);

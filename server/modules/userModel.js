@@ -44,6 +44,12 @@ let userschema=new mongoose.Schema({
         type:Number,
         required:true
     },
+    status:{
+        type:String,
+        enum:["ACTIVE", "IN-ACTIVE"],
+        default:"ACTIVE",
+        required:true
+    },
     designation:{
         type:String,
         required:true
@@ -53,6 +59,7 @@ let userschema=new mongoose.Schema({
     },
     department:{
         type:mongoose.Schema.Types.ObjectId,
+        ref:"departments",
         required:true
     },
     createdBy:{

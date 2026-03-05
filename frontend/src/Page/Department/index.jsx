@@ -1,6 +1,6 @@
 import React from "react";
-import Sidebar from "../../Layout/Header/sidebar";
-import Header from "../../Layout/Header/Header";
+import Sidebar from "../../Layout/sidebar";
+import Header from "../../Layout/Header";
 import DepartmentList from "../../components/department/Department";
 
 const DepartmentPage = () => {

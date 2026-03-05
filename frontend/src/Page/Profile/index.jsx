@@ -1,16 +1,16 @@
-import LeaveList from "../../components/leave/LeaveList";
+import Profile from "../../components/profile/Profile";
 import Header from "../../Layout/Header"
 import Sidebar from "../../Layout/sidebar"
 
-const LeaveListPage = () => {
+const ProfilePage = () => {
     return(
         <div>
             <Sidebar/>
             <Header/>
             <div className="main-wrapper">
-                <LeaveList/>
+                <Profile/>
             </div>
         </div>
     )
 }
-export default LeaveListPage;
+export default ProfilePage;

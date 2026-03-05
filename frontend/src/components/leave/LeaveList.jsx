@@ -1,93 +1,107 @@
 import './leave.css';
 import { useEffect, useState } from 'react'
 import { Table, Input } from 'antd'
-import {
-    SearchOutlined,
-    FilterOutlined,
-    EditOutlined,
-    DeleteOutlined
-  } from "@ant-design/icons";
+import {SearchOutlined} from "@ant-design/icons";
 import Instance from '../../Axiosconfig';
-import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
-import { showSuccessAlert } from '../../globalConstant';
+import { showErrorAlert, showSuccessAlert } from '../../globalConstant';
 
 const LeaveList = () => {
-    const [userData,setuserData] = useState([]);
+    const [leaveData,setLeaveData] = useState([]);
     let [departmentData,setDepartmentData] = useState([]);
-    const navigate = useNavigate();
     let [pageRefresher,setPageRefresher] = useState(false)
 
-    // const fetchuserData = async()=>{
-    //   try {
-    //     const response = await Instance.get("/user",{
-    //         headers:{
-    //             Authorization:`Bearer ${localStorage.getItem("token")}`
-    //         }
-    //     })
-    //     if (response.status == 200) {
-    //         let users = response?.data?.users || [];
-    //         // setuserData(users);
-    //         let loginUserData =JSON.parse(localStorage.getItem("loginUserData"));
-    //         // console.log(loginUserData?.userRole);
-    //         if (loginUserData?.userRole == "SUPER-ADMIN") {
-    //           users = users?.filter(x => x?.role !== "SUPER-ADMIN");
-    //           setuserData(users);
-    //         }else{
-    //           users = users?.filter(x => x?.role !== "ADMIN" && x?.role !== "SUPER-ADMIN");
-    //           setuserData(users);
-    //         }
-            
-            
-    //     }    
-    //   } catch (error) {
-    //       console.log(error?.response?.data);
-    //   }
-    // }
+    const fetchLeaveData = async()=>{
+      try {
+        const response = await Instance.get("/leave",{
+            headers:{
+                Authorization:`Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        if (response.status == 200) {
+            let leaves = response?.data?.leaves || [];
+            leaves = leaves?.filter(x => x?.action == "Pending");
+            setLeaveData(leaves); 
+        }    
+      } catch (error) {
+          console.log(error?.response?.data);
+      }
+    }
 
-    // const fetchDepartment = async() => {
-    //   try {
-    //     const response = await Instance.get("/department",{
-    //       headers:{
-    //         Authorization:`Bearer ${localStorage.getItem("token")}`
-    //       }
-    //     })
-    //     if (response.status == 200) {
-    //       // console.log(response?.data?.departments);
-    //       const departments = response?.data?.departments ||[];
-    //       setDepartmentData(departments)
-    //     }
-    //   } catch (error) {
-    //     console.log(error?.response?.data);
+    const fetchDepartment = async() => {
+      try {
+        const response = await Instance.get("/department",{
+          headers:{
+            Authorization:`Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        if (response.status == 200) {
+          // console.log(response?.data?.departments);
+          const departments = response?.data?.departments ||[];
+          setDepartmentData(departments)
+        }
+      } catch (error) {
+        console.log(error?.response?.data);
         
-    //   }
-    // }
+      }
+    }
 
-    // useEffect(()=>{
-    //    fetchuserData()
-    //    fetchDepartment()
-    // },[pageRefresher])
+    useEffect(()=>{
+       fetchLeaveData();
+       fetchDepartment()
+    },[pageRefresher])
 
-    // const displayDepName = (id) => {
-    //   if (!id || !departmentData?.length) return "";
+    const displayDepName = (id) => {
+      if (!id || !departmentData?.length) return "";
     
-    //   const result = departmentData.find(
-    //     (x) => x?._id?.toString() === id?.toString()
-    //   );
-    //   return result?.departmentName || "";
-    // };
+      const result = departmentData.find(
+        (x) => x?._id?.toString() === id?.toString()
+      );
+      return result?.departmentName || "";
+    };
 
+    const handleAction = async(id,value) => {
+      try {
+        let payload = {action:value};
+        const response = await Instance.put(`/leave/${id}`,payload,{
+          headers:{
+            Authorization:`Bearer ${localStorage.getItem("token")}`
+          }
+        });
+        if (response.status == 200) {
+          setPageRefresher(!pageRefresher);
+          showSuccessAlert(response?.data?.message);
+        }
+      } catch (error) {
+        console.log(error?.response?.data);
+        showErrorAlert(error?.response?.data?.message)
+      }
+    }
 
-
+    
     const columns = [
         {
           title: "Employee Info",
           render: (text, item) => (
-            <div>
-              {item?.empId || 'N/A'}
+            <div className='empInfo'>
+              <button>
+                <img 
+                  src={item?.empId 
+                    ? `https://ui-avatars.com/api/?name=${`${item?.empId?.firstName+' '+item?.empId?.lastName}`.replace(/ /g, '+')}`
+                    : `https://ui-avatars.com/api/?name=Guest+User`
+                  } 
+                  alt={item ? `${item?.empId?.firstName+' '+item?.empId?.lastName}` : "N/A"} 
+                />
+              </button>
+              <div>
+                <h3>{item?.empId?.firstName+' '+item?.empId?.lastName}</h3>
+                <p>{item?.empId?.email}</p>
+                <h4>{displayDepName(item?.empId?.department)}</h4>
+                <h5>{item?.empId?.role}</h5>
+
+              </div> 
             </div>
           ),
-        //   sorter: (a, b) => a?.firstName.localeCompare(b?.firstName),
         },
         {
           title: "Leave Type",
@@ -132,24 +146,46 @@ const LeaveList = () => {
           title: "Action",
           dataIndex: "action",
           render: (_, record) => (
-            <DeleteOutlined
-              key={`delete-${record._id}`}
-              className="delete-button-table"
-            //   onClick={() => {
-            //     Swal.fire({
-            //       title: "Are you sure",
-            //       text: "You want to Delete?",
-            //       showCancelButton: true,
-            //       confirmButtonColor: "#008BA6",
-            //       cancelButtonColor: "#D1D1D1",
-            //       confirmButtonText: "Yes, Delete!"
-            //     }).then((result) => {
-            //       if (result.isConfirmed) {
-            //         handleDelete(record._id)
-            //       }
-            //     })
-            //   }}
-            />
+            <div className='actionButtons'>
+              <button 
+                className='bg-green-500'
+                onClick={() => {
+                Swal.fire({
+                    title: "Are you sure",
+                    text: "You want to Approve?",
+                    showCancelButton: true,
+                    confirmButtonColor: "#008BA6",
+                    cancelButtonColor: "#D1D1D1",
+                    confirmButtonText: "Yes, Approve!"
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // handleAction(record._id,"Approved")
+                    }
+                  })
+                }}
+              >
+                Approve
+              </button>
+              <button 
+                className='bg-red-500'
+                onClick={() => {
+                Swal.fire({
+                    title: "Are you sure",
+                    text: "You want to Reject?",
+                    showCancelButton: true,
+                    confirmButtonColor: "#008BA6",
+                    cancelButtonColor: "#D1D1D1",
+                    confirmButtonText: "Yes, Reject!"
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // handleAction(record._id,"Rejected")
+                    }
+                  })
+                }}
+              >
+                Reject
+              </button>
+            </div>
           ),
         },
       ];
@@ -176,7 +212,7 @@ const LeaveList = () => {
       <div className="table-list">
           <Table
             columns={columns}
-            // dataSource={userData}
+            dataSource={leaveData}
             rowKey={(data) => data._id}
             
             // rowSelection={{

@@ -28,6 +28,15 @@ const getUserById = async(id) => {
     }
 };
 
+const getUserwithDepById = async(id) => {
+    try {
+        const user = await User.findById(id).populate("department");
+        return user;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const updateUser = async(id,data) => {
     try {
         const updatedData = await User.findByIdAndUpdate(id,{$set:data});
@@ -47,4 +56,4 @@ const deleteUser = async(id) => {
     }
 };
 
-module.exports = {UserService:{createUser, getAllUsers, getUserById, updateUser, deleteUser}};
+module.exports = {UserService:{createUser, getAllUsers, getUserById, updateUser, deleteUser, getUserwithDepById}};

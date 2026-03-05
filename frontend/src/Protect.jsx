@@ -1,22 +1,10 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
-const Protect = ({ Component }) => {
-    const navigate = useNavigate();
-    const dashboard = localStorage.getItem("dashboard");
+const Protect = () => {
+  const { user } = useAuth();
 
-    useEffect(() => {
-        if (!dashboard) {
-            navigate("/");
-        }
-    }, [dashboard, navigate]);  // Add dashboard and navigate to the dependency array
-
-    return (
-        <>
-            <Component />
-        </>
-    );
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default Protect;
-

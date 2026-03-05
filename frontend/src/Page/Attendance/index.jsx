@@ -1,5 +1,5 @@
-import Header from "../../Layout/Header/Header"
-import Sidebar from "../../Layout/Header/sidebar"
+import Header from "../../Layout/Header"
+import Sidebar from "../../Layout/sidebar"
 
 const AttendancePage = () => {
     return(

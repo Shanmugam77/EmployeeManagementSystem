@@ -5,8 +5,10 @@ import React from "react";
 import { Input } from 'antd';
 import { showErrorAlert } from "../globalConstant";
 import Instance from "../Axiosconfig";
+import { useAuth } from "../context/AuthContext";
 
 const Login=()=>{
+    const { login } = useAuth();
     let navigate=useNavigate()
     let [email,setEmail] = useState(localStorage.getItem("remEmail") ? localStorage.getItem("remEmail") : "");
     let [password,setPassword] = useState(localStorage.getItem("remPassword") ? localStorage.getItem("remPassword") : "");
@@ -35,17 +37,15 @@ const Login=()=>{
                     localStorage.removeItem("remEmail")
                     localStorage.removeItem("remPassword")  
                 }
-                const {responseData} = response?.data;
-                if(responseData){
-                    localStorage.setItem("loginUserData",JSON.stringify(responseData));
-                    localStorage.setItem("token",responseData?.token);
-                    localStorage.setItem("dashboard",true);
-                    if (responseData?.userRole === 'STUDENT') {
-                        navigate(`/studentprofile/${responseData?.userId}`)
-                    }else{
-                        navigate("/dashboard");
-                    }
+                // console.log(response.data.responseData);
+                
+                login(response.data.responseData);
+                if (response.data.responseData.role !== "EMPLOYEE") {
+                  navigate("/dashboard");
+                } else {
+                  navigate("/employee-dashboard");
                 }
+                        
             }
         } catch (error) {
             console.error(error);

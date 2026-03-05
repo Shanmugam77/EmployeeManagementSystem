@@ -2,10 +2,12 @@ import { useState, useRef, useEffect } from "react";
 import "./header.css";
 import Swal from 'sweetalert2'
 import { Link, useNavigate } from "react-router-dom";
-import Instance from "../../Axiosconfig";
+import Instance from "../Axiosconfig";
 // import { useSelector, useDispatch } from 'react-redux';
+import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
+  const { logout,user } = useAuth();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -16,21 +18,25 @@ const Header = () => {
     setIsDropdownOpen(prev => !prev);
   };
 
-  const handleSignOut = () => {
-    Swal.fire({
-      title: "Are you sure",
-      text: "You want to Logout?",
-      showCancelButton: true,
-      confirmButtonColor: "#555",
-      cancelButtonColor: "#008BA6",
-      confirmButtonText: "Yes, logout me!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem("token")
-        navigate("/")
-      }
-    })
-  };
+  const handleLogout = () => {
+    console.log(user);
+    
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You want to logout?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#555",
+        cancelButtonColor: "#008BA6",
+        confirmButtonText: "Yes, logout me!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          logout();
+          // Redirect to login page
+          navigate("/login", { replace: true });
+        }
+      });
+    };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -60,10 +66,10 @@ const Header = () => {
                     letterSpacing: "0.5px",
                   }}
                 >
-                  {infoUsers ? `${infoUsers.userName}` : "Guest User"}
+                  {user ? `${user?.userName}` : "Guest User"}
                 </span>
                 <br />
-                <span className="xl-2">{infoUsers ? infoUsers.userRole : "Guest"}</span>
+                <span className="xl-2">{user ? user?.userRole : "Guest"}</span>
               </div>
 
               <button
@@ -75,11 +81,11 @@ const Header = () => {
               >
                 <img 
                   className="profile--icon" 
-                  src={infoUsers 
-                    ? `https://ui-avatars.com/api/?name=${`${infoUsers.userName}`.replace(/ /g, '+')}`
+                  src={user 
+                    ? `https://ui-avatars.com/api/?name=${`${user.userName}`.replace(/ /g, '+')}`
                     : `https://ui-avatars.com/api/?name=Guest+User`
                   } 
-                  alt={infoUsers ? `${infoUsers.userName}` : "Guest User"} 
+                  alt={user ? `${user.userName}` : "Guest User"} 
                 />
               </button>
 
@@ -95,7 +101,7 @@ const Header = () => {
                       Edit Profile
                     </Link> */}
                     <div
-                      onClick={handleSignOut}
+                      onClick={handleLogout}
                       className="dropdown-item"
                       role="menuitem"
                       tabIndex="0"

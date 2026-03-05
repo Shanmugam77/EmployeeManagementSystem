@@ -12,7 +12,7 @@ const createLeave = async(data) => {
 
 const getAllLeaves = async() => {
     try {
-        const leaves = await Leave.find();
+        const leaves = await Leave.find().populate("empId");
         return leaves;
     } catch (error) {
         throw error;
