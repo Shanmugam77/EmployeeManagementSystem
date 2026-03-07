@@ -121,10 +121,10 @@ const LeaveList = () => {
           ),
         },
         {
-          title: "From Data",
+          title: "From Date - To Date",
           dataIndex: "fromDate",
           render: (text, item) => {
-            return new Date(item?.fromDate).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" });
+            return `${new Date(item?.fromDate).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })} - ${new Date(item?.toDate).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })}` ;
           },
         },
         {

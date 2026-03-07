@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./dashboard.css";
 import { Carousel } from 'antd';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
@@ -8,8 +8,94 @@ import SummarizeIcon from '@mui/icons-material/Summarize';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import CancelIcon from '@mui/icons-material/Cancel';
+import Instance from '../../Axiosconfig';
 
 const Dashboard = () => {
+  const [countData,setCountData] = useState({});
+
+  const handleCount = (value,fieldName) => {
+    setCountData((prev)=>{
+      return{
+        ...prev,
+        [fieldName]:value
+      }
+    })
+  }
+
+  const fetchEmployeeData = async() => {
+    try {
+      const response = await Instance.get("/user",{
+        headers:{
+          Authorization:`Bearer ${localStorage.getItem("token")}`
+        }
+      });
+      if (response.status == 200) {
+        // console.log("emp",response?.data);
+        let data = response?.data?.users;
+        let empData = data.filter((x)=>{return x?.role == "EMPLOYEE"}) || [];
+        let totalSalary = empData.reduce((acc,curr)=>{return acc+curr?.salary},0)
+        // console.log(empData.length);
+        handleCount(empData.length,"EmployeeCount");
+        handleCount(totalSalary,"TotalEmployeeSalary")
+      }
+
+    } catch (error) {
+      console.log(error?.response?.data);
+    }
+  }
+
+  const fetchDepartmentData = async() => {
+    try {
+      const response = await Instance.get("/department",{
+        headers:{
+          Authorization:`Bearer ${localStorage.getItem("token")}`
+        }
+      });
+      if (response.status == 200) {
+        // console.log("dep",response?.data); 
+        let data = response?.data?.departments;
+        // console.log(data.length);
+        handleCount(data.length,"DepartmentCount");
+      }
+
+    } catch (error) {
+      console.log(error?.response?.data);
+    }
+  }
+
+  const fetchLeaveData = async() => {
+    try {
+      const response = await Instance.get("/leave",{
+        headers:{
+          Authorization:`Bearer ${localStorage.getItem("token")}`
+        }
+      });
+      if (response.status == 200) {
+        // console.log("dep",response?.data); 
+        let data = response?.data?.leaves;
+        let pending = data.filter((x)=>{return x?.action == "Pending"}) || [];
+        let approved = data.filter((x)=>{return x?.action == "Approved"}) || [];
+        let rejected = data.filter((x)=>{return x?.action == "Rejected"}) || [];
+
+
+        // console.log(data.length);
+        handleCount(data.length,"LeaveCount");
+        handleCount(pending.length,"PendingLeaveCount"); 
+        handleCount(approved.length,"ApprovedLeaveCount"); 
+        handleCount(rejected.length,"RejectedLeaveCount"); 
+      }
+
+    } catch (error) {
+      console.log(error?.response?.data);
+    }
+  }
+
+  useEffect(()=>{
+    fetchEmployeeData();
+    fetchDepartmentData();
+    fetchLeaveData();
+  },[])
+
   return (
     <div>
         <h3 className='dashboardTitle'>Welcome to Dashboard, admin</h3>
@@ -22,7 +108,7 @@ const Dashboard = () => {
                   <div className='minisubcard'>
                     <div className='card-text'>
                       <h6>Total Employee</h6>
-                      <h3>3</h3>
+                      <h3>{countData?.EmployeeCount || 0}</h3>
                     </div>
                     <div className='card-icon bg-blue-600'>
                       <GroupsOutlinedIcon fontSize='inherit'/>
@@ -35,7 +121,7 @@ const Dashboard = () => {
                   <div className='minisubcard'>
                     <div className='card-text'>
                       <h6>Total Departments</h6>
-                      <h3>4</h3>
+                      <h3>{countData?.DepartmentCount || 0}</h3>
                     </div>
                     <div className='card-icon bg-green-600'>
                       <ApartmentIcon fontSize='inherit'/>
@@ -48,7 +134,7 @@ const Dashboard = () => {
                   <div className='minisubcard'>
                     <div className='card-text'>
                       <h6>Monthly Salary</h6>
-                      <h3>$60000</h3>
+                      <h3>${countData?.TotalEmployeeSalary || 0}</h3>
                     </div>
                     <div className='card-icon bg-purple-600'>
                       <PaymentsIcon fontSize='inherit'/>
@@ -67,7 +153,7 @@ const Dashboard = () => {
                   <div className='minisubcard'>
                     <div className='card-text'>
                       <h6>Leave Applied</h6>
-                      <h3>0</h3>
+                      <h3>{countData?.LeaveCount || 0}</h3>
                     </div>
                     <div className='card-icon bg-orange-600'>
                       <SummarizeIcon fontSize='inherit'/>
@@ -80,7 +166,7 @@ const Dashboard = () => {
                   <div className='minisubcard'>
                     <div className='card-text'>
                       <h6>Leave Approved</h6>
-                      <h3>0</h3>
+                      <h3>{countData?.ApprovedLeaveCount || 0}</h3>
                     </div>
                     <div className='card-icon bg-green-600'>
                       <CheckCircleIcon fontSize='inherit'/>
@@ -93,7 +179,7 @@ const Dashboard = () => {
                   <div className='minisubcard'>
                     <div className='card-text'>
                       <h6>Leave Pending</h6>
-                      <h3>0</h3>
+                      <h3>{countData?.PendingLeaveCount || 0}</h3>
                     </div>
                     <div className='card-icon bg-yellow-600'>
                       <HourglassEmptyIcon fontSize='inherit'/>
@@ -106,7 +192,7 @@ const Dashboard = () => {
                   <div className='minisubcard'>
                     <div className='card-text'>
                       <h6>Leave Rejected</h6>
-                      <h3>0</h3>
+                      <h3>{countData?.RejectedLeaveCount || 0}</h3>
                     </div>
                     <div className='card-icon bg-red-600' >
                       <CancelIcon fontSize='inherit'/>
