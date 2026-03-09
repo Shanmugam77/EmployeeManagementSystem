@@ -100,7 +100,7 @@ function Sidebar() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/requestleave" className={conditionalClass("/requestleave")}>
+                  <Link to="/userleaves" className={conditionalClass("/userleaves")}>
                     <span className="me-3">Request Leave</span>
                   </Link>
                 </li>

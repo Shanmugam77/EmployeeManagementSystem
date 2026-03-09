@@ -22,7 +22,7 @@ const getAllLeaves = async() => {
 const getLeavesByUserId = async(id) => {
     try {
         const leaves = await Leave.find();
-        const userLeaves = leaves.map((x)=>x?.empId == id);
+        const userLeaves = leaves.filter((x)=>x?.empId == id);
         return userLeaves;
     } catch (error) {
         throw error;

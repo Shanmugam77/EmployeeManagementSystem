@@ -3,10 +3,12 @@ import "./leave.css"
 import { Input,Select,DatePicker } from 'antd';
 import Instance from "../../Axiosconfig";
 import { showErrorAlert, showSuccessAlert } from "../../globalConstant";
+import { useNavigate } from "react-router-dom";
 const { TextArea } = Input;
 
 const RequestLeave = () => {
     const [reqData,setReqData] = useState({});
+    const navigate = useNavigate();
 
     const handleFieldChange = (e,fieldName) => {
         let value = e?.target?.value;
@@ -30,9 +32,9 @@ const RequestLeave = () => {
         try {
             // console.log("sun",reqData);
             let payload = reqData;
-            payload.fromDate = reqData?.fromDate.toDate();
-            payload.toDate = reqData?.toDate.toDate(); 
-            payload.resumeDate = reqData?.resumeDate.toDate(); 
+            payload.fromDate = reqData?.fromDate?.toDate();
+            payload.toDate = reqData?.toDate?.toDate(); 
+            payload.resumeDate = reqData?.resumeDate?.toDate(); 
             // console.log(payload);
             
             const response = await Instance.post("/leave",payload,{
@@ -44,9 +46,10 @@ const RequestLeave = () => {
                 console.log(response);
                 setReqData({});
                 showSuccessAlert(response?.data?.message);
+                navigate("/userleaves")
             }
             
-        } catch (error) {
+        } catch (error) { 
             console.log(error?.response?.data);
             showErrorAlert(error?.response?.data?.message)
         }

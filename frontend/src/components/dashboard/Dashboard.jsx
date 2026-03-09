@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import "./dashboard.css";
-import { Carousel } from 'antd';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import PaymentsIcon from '@mui/icons-material/Payments';

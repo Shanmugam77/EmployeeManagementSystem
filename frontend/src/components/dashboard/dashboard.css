@@ -98,3 +98,92 @@
     justify-content: center;
     align-items: center;
 }
+
+/* =============================Emp-Dashboard=================================== */
+
+.welcometextbox{
+    height: 15vh;
+    width: 100%;
+    /* border: 2px solid black; */
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-evenly;
+    padding: 20px;
+    background-color: #008BA6;
+    margin-top: 20px;
+}
+
+.welcometextbox>h3{
+    font-size: 40px;
+    font-weight: 700;
+    color: white;
+}
+
+.welcometextbox>p{
+    font-size: 20px;
+    font-weight: 500;
+    color: #D1D1D1;
+}
+
+.userDetailslayout{
+    height: 30vh;
+    width: 100%;
+    /* border: 2px solid black; */
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.userDetailslayout>div{
+    height: 100%;
+    width: 48%;
+    border: 2px solid #008BA6;
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    background-color: #F9F9FB;
+    color: #008BA6;
+    box-shadow: 0px 0px 5px #008BA6;
+}
+
+.userDetailslayout>div>div{
+    /* border: 2px solid black; */
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.empuserlogo{
+    height: 80px !important;
+    width: 80px !important;
+    border-radius: 10px;
+}
+
+.empusersublogo{
+    font-size: 40px !important;
+}
+
+.userDetailslayout>div>h4{
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.userDetailslayout>div>h6{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.userDetailslayout>div>p{
+    font-size: 15px;
+    font-weight: 400;
+}

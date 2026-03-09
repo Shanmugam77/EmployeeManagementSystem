@@ -14,9 +14,9 @@ import ProfilePage from "./Page/Profile"
 import EmployeeDashboardPage from "./Page/Dashboard/EmployeeDashboard"
 import RequestLeavePage from "./Page/Leaves/RequestLeave"
 
-import { useState } from "react";
 import { useAuth } from "./context/AuthContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import EmployeeLeaveListPage from "./Page/Leaves/UserLeaveList"
 
 const App = () => {
  const { user } = useAuth();
@@ -56,6 +56,7 @@ const App = () => {
             <>
               <Route path="/" element={<Navigate to="/employee-dashboard" />} />
               <Route path="/employee-dashboard" element={<EmployeeDashboardPage />} />
+              <Route path="/userleaves" element={<EmployeeLeaveListPage />} />
               <Route path="/requestleave" element={<RequestLeavePage />} />
             </>
           )}
@@ -65,7 +66,7 @@ const App = () => {
 
         </Route>
 
-        {/* <Route path="*" element={<Navigate to="/login" />} /> */}
+        <Route path="*" element={<Navigate to="/login" />} />
 
       </Routes>
     </BrowserRouter>
