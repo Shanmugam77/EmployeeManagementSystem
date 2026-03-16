@@ -10,6 +10,8 @@ const LeaveList = () => {
     const [leaveData,setLeaveData] = useState([]);
     let [departmentData,setDepartmentData] = useState([]);
     let [pageRefresher,setPageRefresher] = useState(false)
+    const [perLeaveData,setPerLeaveData] = useState([]);
+    let [searchText,setSearchText] = useState("");
 
     const fetchLeaveData = async()=>{
       try {
@@ -21,6 +23,8 @@ const LeaveList = () => {
         if (response.status == 200) {
             let leaves = response?.data?.leaves || [];
             leaves = leaves?.filter(x => x?.action == "Pending");
+            leaves = leaves.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            setPerLeaveData(leaves);
             setLeaveData(leaves); 
         }    
       } catch (error) {
@@ -189,6 +193,39 @@ const LeaveList = () => {
           ),
         },
       ];
+
+    //   const fetchperLeaveData = async()=>{
+    //   try {
+    //     const response = await Instance.get("/leave",{
+    //         headers:{
+    //             Authorization:`Bearer ${localStorage.getItem("token")}`
+    //         }
+    //     })
+    //     if (response.status == 200) {
+    //         let leaves = response?.data?.leaves || [];
+    //         leaves = leaves?.filter(x => x?.action == "Pending");
+    //         leaves = leaves.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    //         setPerLeaveData(leaves);
+    //         // setLeaveData(leaves); 
+    //     }    
+    //   } catch (error) {
+    //       console.log(error?.response?.data);
+    //   }
+    // }
+  
+  useEffect(()=>{
+    // fetchperLeaveData();
+    if (searchText === '') {
+      // console.log(searchText,"sun");
+      // console.log(perLeaveData); 
+      setLeaveData(perLeaveData);
+    }
+    else{
+      let filterData = perLeaveData?.filter(item => JSON.stringify(item)?.toLowerCase().includes(searchText?.toLowerCase()));
+      setLeaveData(filterData);
+    }
+    
+  },[searchText])
   return (
     <div>
       <div className='main-title-all'>
@@ -198,12 +235,8 @@ const LeaveList = () => {
            <div className="search-table-container">
             <Input
               placeholder="Search..."
-            //   value={fileterParameters?.searchText}
-            //   onChange={(e) => {
-            //     let newData = { ...fileterParameters };
-            //     newData['searchText'] = e.target.value;
-            //     setFilterParameters(newData);
-            //   }}
+              value={searchText}
+              onChange={(e) => {setSearchText(e.target.value)}}
               className="search-input-table"
               prefix={<SearchOutlined />}
             />

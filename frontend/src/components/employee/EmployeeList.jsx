@@ -17,6 +17,8 @@ const EmployeeList = () => {
     let [departmentData,setDepartmentData] = useState([]);
     const navigate = useNavigate();
     let [pageRefresher,setPageRefresher] = useState(false)
+    let [perUserData,setPerUserData] = useState([]);
+    let [searchText,setSearchText] = useState('');
 
     const fetchuserData = async()=>{
       try {
@@ -27,17 +29,15 @@ const EmployeeList = () => {
         })
         if (response.status == 200) {
             let users = response?.data?.users || [];
-            // setuserData(users);
             let loginUserData =JSON.parse(localStorage.getItem("loginUserData"));
             // console.log(loginUserData?.userRole);
             if (loginUserData?.userRole == "SUPER-ADMIN") {
               users = users?.filter(x => x?.role !== "SUPER-ADMIN");
-              setuserData(users);
             }else{
               users = users?.filter(x => x?.role !== "ADMIN" && x?.role !== "SUPER-ADMIN");
-              setuserData(users);
             }
-            
+            setPerUserData(users);
+            setuserData(users); 
             
         }    
       } catch (error) {
@@ -181,6 +181,14 @@ const EmployeeList = () => {
           ),
         },
       ];
+      useEffect(()=>{
+        if(searchText === ''){
+          setuserData(perUserData);
+        }else{
+          let filterData = perUserData.filter(item => JSON.stringify(item)?.toLowerCase().includes(searchText?.toLowerCase()));
+          setuserData(filterData)
+        }
+      },[searchText])
   return (
     <div>
       <div className='main-title-all'>
@@ -191,12 +199,8 @@ const EmployeeList = () => {
            <div className="search-table-container">
             <Input
               placeholder="Search..."
-            //   value={fileterParameters?.searchText}
-            //   onChange={(e) => {
-            //     let newData = { ...fileterParameters };
-            //     newData['searchText'] = e.target.value;
-            //     setFilterParameters(newData);
-            //   }}
+              value={searchText}
+              onChange={(e) => {setSearchText(e.target.value)}}
               className="search-input-table"
               prefix={<SearchOutlined />}
             />

@@ -12,7 +12,9 @@ const EmployeeLeaveList = () => {
     const {user} = useAuth();
     const navigate = useNavigate();
     const [leaveData,setLeaveData] = useState([]);
-    let [pageRefresher,setPageRefresher] = useState(false)
+    let [pageRefresher,setPageRefresher] = useState(false);
+    let [perLeaveData,setPerLeaveData] = useState([]);
+    let [searchText,setSearchText] = useState('');
 
     const fetchLeaveData = async()=>{
       try {
@@ -24,8 +26,10 @@ const EmployeeLeaveList = () => {
         if (response.status == 200) {
             let leaves = response?.data?.leaves || [];
             console.log(response?.data?.leaves);
-            
+            leaves = leaves.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
             // leaves = leaves?.filter(x => x?.action == "Pending");
+            setPerLeaveData(leaves);
             setLeaveData(leaves); 
         }    
       } catch (error) {
@@ -39,10 +43,9 @@ const EmployeeLeaveList = () => {
     },[pageRefresher])
 
 
-    const handleAction = async(id,value) => {
+    const handleAction = async(id) => {
       try {
-        let payload = {action:value};
-        const response = await Instance.put(`/leave/${id}`,payload,{
+        const response = await Instance.delete(`/leave/${id}`,{
           headers:{
             Authorization:`Bearer ${localStorage.getItem("token")}`
           }
@@ -101,39 +104,48 @@ const EmployeeLeaveList = () => {
         {
           title: "Status",
           render: (text, item) => (
-            <div className={`text-red-200 ${item?.action == 'Pending' ?('text-yellow-400'):(item?.action =="Approved"?"text-green-400":"text-red-400")}`}>
+            <div className={`text-red-200 ${item?.action == 'Pending' ?('text-yellow-400'):(item?.action =="Approved"?"text-green-600":"text-red-600")}`}>
               {item?.action || 'N/A'}
             </div>
           ),
         },
-        // {
-        //   title: "Action",
-        //   dataIndex: "action",
-        //   render: (_, record) => (
-        //     <div className='actionButtons'>
-        //       <button 
-        //         className='bg-red-500'
-        //         onClick={() => {
-        //         Swal.fire({
-        //             title: "Are you sure",
-        //             text: "You want to Delete?",
-        //             showCancelButton: true,
-        //             confirmButtonColor: "#008BA6",
-        //             cancelButtonColor: "#D1D1D1",
-        //             confirmButtonText: "Yes, Delete!"
-        //           }).then((result) => {
-        //             if (result.isConfirmed) {
-        //               // handleAction(record._id,"Rejected")
-        //             }
-        //           })
-        //         }}
-        //       >
-        //         Delete
-        //       </button>
-        //     </div>
-        //   ),
-        // },
+        {
+          title: "Action",
+          dataIndex: "action",
+          render: (_, record) => (
+            <div className='actionButtons'>
+              <button 
+                className='bg-red-500'
+                onClick={() => {
+                Swal.fire({
+                    title: "Are you sure",
+                    text: "You want to Delete?",
+                    showCancelButton: true,
+                    confirmButtonColor: "#008BA6",
+                    cancelButtonColor: "#D1D1D1",
+                    confirmButtonText: "Yes, Delete!"
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      handleAction(record._id)
+                    }
+                  })
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ),
+        },
       ];
+      
+      useEffect(()=>{
+        if(searchText === ''){
+          setLeaveData(perLeaveData);
+        }else{
+          let filterData = perLeaveData.filter(item => JSON.stringify(item)?.toLowerCase().includes(searchText?.toLowerCase()));
+          setLeaveData(filterData);
+        }
+      },[searchText])
   return (
     <div>
       <div className='main-title-all'>
@@ -148,12 +160,8 @@ const EmployeeLeaveList = () => {
            <div className="search-table-container">
             <Input
               placeholder="Search..."
-            //   value={fileterParameters?.searchText}
-            //   onChange={(e) => {
-            //     let newData = { ...fileterParameters };
-            //     newData['searchText'] = e.target.value;
-            //     setFilterParameters(newData);
-            //   }}
+              value={searchText}
+              onChange={(e) => {setSearchText(e.target.value)}}
               className="search-input-table"
               prefix={<SearchOutlined />}
             />

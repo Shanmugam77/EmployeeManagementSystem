@@ -16,11 +16,13 @@ import Swal from "sweetalert2";
 
 const DepartmentList = () => {
 
-    let [departmentData,setDepartmentData] = useState([{id:1,name:'ADMIN',description:'ADMIN Department'},{id:2,name:'HR',description:'HUMAN RESOURCE'},{id:3, name:'IT',description:'INFORMATION TECHNOLOGY'}])
+    let [departmentData,setDepartmentData] = useState([]);
     let [addDepView,setAddDepView] = useState(false);
     let [editDepView,setEditDepView] = useState(false);
     let [addDepData,setAddDepData] = useState({});
-    let [pageRefresher,setPageRefresher] = useState(false)
+    let [pageRefresher,setPageRefresher] = useState(false);
+    let [perDepartmentData,setPerDepartmentData] = useState([]);
+    let [searchText,setSearchText] = useState('');
 
     let fieldChange = (e,fieldName) => {
       setAddDepData((prevData)=>{
@@ -41,6 +43,7 @@ const DepartmentList = () => {
         if (response.status == 200) {
           // console.log(response?.data?.departments);
           const departments = response?.data?.departments ||[];
+          setPerDepartmentData(departments);
           setDepartmentData(departments)
         }
       } catch (error) {
@@ -197,6 +200,14 @@ const DepartmentList = () => {
               ),
             },
           ];
+          useEffect(()=>{
+            if (searchText === '') {
+              setDepartmentData(perDepartmentData);
+            }else{
+              let filterData = perDepartmentData.filter(item => JSON.stringify(item)?.toLowerCase().includes(searchText?.toLowerCase()));
+              setDepartmentData(filterData);
+            }
+          },[searchText])
     return(
         <div className="deparment-body"> 
             <div className='main-title-all'>
@@ -207,12 +218,8 @@ const DepartmentList = () => {
                  <div className="search-table-container">
                   <Input
                     placeholder="Search..."
-                  //   value={fileterParameters?.searchText}
-                  //   onChange={(e) => {
-                  //     let newData = { ...fileterParameters };
-                  //     newData['searchText'] = e.target.value;
-                  //     setFilterParameters(newData);
-                  //   }}
+                    value={searchText}
+                    onChange={(e) => {setSearchText(e.target.value)}}
                     className="search-input-table"
                     prefix={<SearchOutlined />}
                   />
