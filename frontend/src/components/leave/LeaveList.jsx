@@ -91,8 +91,8 @@ const LeaveList = () => {
               <button>
                 <img 
                   src={item?.empId 
-                    ? `https://ui-avatars.com/api/?name=${`${item?.empId?.firstName+' '+item?.empId?.lastName}`.replace(/ /g, '+')}`
-                    : `https://ui-avatars.com/api/?name=Guest+User`
+                    ? item?.empId?.profileImg
+                    : `https://ui-avatars.com/api/?name=${`${item?.empId?.firstName+' '+item?.empId?.lastName}`.replace(/ /g, '+')}`
                   } 
                   alt={item ? `${item?.empId?.firstName+' '+item?.empId?.lastName}` : "N/A"} 
                 />
@@ -193,28 +193,8 @@ const LeaveList = () => {
           ),
         },
       ];
-
-    //   const fetchperLeaveData = async()=>{
-    //   try {
-    //     const response = await Instance.get("/leave",{
-    //         headers:{
-    //             Authorization:`Bearer ${localStorage.getItem("token")}`
-    //         }
-    //     })
-    //     if (response.status == 200) {
-    //         let leaves = response?.data?.leaves || [];
-    //         leaves = leaves?.filter(x => x?.action == "Pending");
-    //         leaves = leaves.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-    //         setPerLeaveData(leaves);
-    //         // setLeaveData(leaves); 
-    //     }    
-    //   } catch (error) {
-    //       console.log(error?.response?.data);
-    //   }
-    // }
   
   useEffect(()=>{
-    // fetchperLeaveData();
     if (searchText === '') {
       // console.log(searchText,"sun");
       // console.log(perLeaveData); 

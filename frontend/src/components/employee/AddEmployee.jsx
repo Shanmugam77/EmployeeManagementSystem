@@ -200,7 +200,7 @@ const AddEmployee = () => {
                         <tr>
                             <td>
                                 <h3>Profile Image</h3>
-                                <Input disabled className="inp" type='file'  variant="filled" onChange={(e)=>{handleFieldChange(e,"profileImg")}} />
+                                <Input  className="inp" type='file'  variant="filled" onChange={(e)=>{handleFieldChange(e,"profileImg")}} />
                             </td>
                             <td>
                                 <h3>Salary</h3>

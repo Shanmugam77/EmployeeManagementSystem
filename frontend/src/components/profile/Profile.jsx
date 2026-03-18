@@ -39,6 +39,14 @@ const Profile = () => {
                 <div className="profilelayout">
                     <div className="imgcontent">
                         <div className="imgoverline">
+                            <img  
+                              className="profile-img"
+                              src={userData 
+                                ? userData?.profileImg
+                                : `https://ui-avatars.com/api/?name=${`${userData.firstName}`.replace(/ /g, '+')}`
+                              } 
+                              alt={userData ? `${userData.firstName}` : "Guest User"} 
+                            />
 
                         </div>
                         <h3>{userData?userData?.firstName+' '+userData?.lastName : ''}</h3>
