@@ -192,7 +192,7 @@ const DepartmentList = () => {
                       confirmButtonText: "Yes, Delete!"
                     }).then((result) => {
                       if (result.isConfirmed) {
-                        // deleteDepartment(record._id)
+                        deleteDepartment(record._id)
                       }
                     })
                   }}

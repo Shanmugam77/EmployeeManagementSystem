@@ -89,7 +89,7 @@ const EmployeeList = () => {
           showSuccessAlert(response?.data?.message);
         }
       } catch (error) {
-        
+        console.log(error?.response?.data);
       }
     };
 

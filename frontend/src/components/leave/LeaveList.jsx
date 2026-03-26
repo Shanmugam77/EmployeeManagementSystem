@@ -163,7 +163,7 @@ const LeaveList = () => {
                     confirmButtonText: "Yes, Approve!"
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      // handleAction(record._id,"Approved")
+                      handleAction(record._id,"Approved")
                     }
                   })
                 }}
@@ -182,7 +182,7 @@ const LeaveList = () => {
                     confirmButtonText: "Yes, Reject!"
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      // handleAction(record._id,"Rejected")
+                      handleAction(record._id,"Rejected")
                     }
                   })
                 }}
