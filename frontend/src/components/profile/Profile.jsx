@@ -41,11 +41,11 @@ const Profile = () => {
                         <div className="imgoverline">
                             <img  
                               className="profile-img"
-                              src={userData 
+                              src={userData?.profileImg 
                                 ? userData?.profileImg
-                                : `https://ui-avatars.com/api/?name=${`${userData.firstName}`.replace(/ /g, '+')}`
+                                : `https://ui-avatars.com/api/?name=${`${userData?.firstName} ${userData?.lastName}`.replace(/ /g, '+')}`
                               } 
-                              alt={userData ? `${userData.firstName}` : "Guest User"} 
+                              alt={userData ? `${userData?.firstName}` : "Guest User"} 
                             />
 
                         </div>
@@ -115,7 +115,7 @@ const Profile = () => {
                                         <h6>{userData?new Date(userData?.createdAt).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" }) : ''}</h6>
                                     </div>
                                     <div className="singlefield">
-                                        <h5>Last Updated:</h5>
+                                        <h5>LUD:</h5>
                                         <h6>{userData?new Date(userData?.updatedAt).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" }) : ''}</h6>
                                     </div>
                                 </div>

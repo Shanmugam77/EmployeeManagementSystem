@@ -77,13 +77,13 @@
     justify-content:space-between;
 }
 .card-text>h6{
-    font-size: 20px;
+    font-size: clamp(15px, 1.2vw, 20px);
     color: #606372;
     font-weight: 400;
 }
 
 .card-text>h3{
-    font-size: 40px;
+    font-size: clamp(30px, 1.2vw, 40px);
     font-weight: 700;
     color: black;
 }

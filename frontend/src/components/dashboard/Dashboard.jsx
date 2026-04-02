@@ -119,7 +119,7 @@ const Dashboard = () => {
                 <div className='minicard'>
                   <div className='minisubcard'>
                     <div className='card-text'>
-                      <h6>Total Departments</h6>
+                      <h6>Total Department</h6>
                       <h3>{countData?.DepartmentCount || 0}</h3>
                     </div>
                     <div className='card-icon bg-green-600'>

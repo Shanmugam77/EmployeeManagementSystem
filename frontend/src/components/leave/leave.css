@@ -136,7 +136,7 @@
   height: 30px;
   border-radius: 5px;
   color: white;
-  font-size: 15PX;
+  font-size: clamp(10px, 1vw, 15px);
   font-weight: 500;
   box-shadow: 0px 0px 3px black;
 }

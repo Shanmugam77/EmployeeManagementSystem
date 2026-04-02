@@ -25,7 +25,7 @@ const EmployeeLeaveList = () => {
         })
         if (response.status == 200) {
             let leaves = response?.data?.leaves || [];
-            console.log(response?.data?.leaves);
+            // console.log(response?.data?.leaves);
             leaves = leaves.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
             // leaves = leaves?.filter(x => x?.action == "Pending");
